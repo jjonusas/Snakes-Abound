@@ -1,10 +1,7 @@
 # Snakes Abound 
 
 A new version of the classical game snake. This is a toy project as part of
-Udacity C++ Nanodegree. 
-
-This is a starter repo for the Capstone project in the [Udacity C++ Nanodegree Program](https://www.udacity.com/course/c-plus-plus-nanodegree--nd213).
-
+[Udacity C++ Nanodegree Program](https://www.udacity.com/course/c-plus-plus-nanodegree--nd213). 
 
 ## Dependencies for Running Locally
 * cmake >= 3.7
