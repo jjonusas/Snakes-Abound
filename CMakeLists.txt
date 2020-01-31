@@ -7,4 +7,8 @@ set(CMAKE_CXX_FLAGS, "${CXX_FLAGS}")
 
 project(SnakesAbound)
 
-add_executable(SnakesAbound src/main.cpp)
+find_package(SDL2 REQUIRED)
+include_directories(${SDL2_INCLUDE_DIRS} src)
+
+file(GLOB project_SRCS src/*.cpp) #src/*.h
+add_executable(SnakesAbound ${project_SRCS})
