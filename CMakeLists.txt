@@ -12,3 +12,4 @@ include_directories(${SDL2_INCLUDE_DIRS} src)
 
 file(GLOB project_SRCS src/*.cpp) #src/*.h
 add_executable(SnakesAbound ${project_SRCS})
+target_link_libraries(SnakesAbound ${SDL2_LIBRARIES})
