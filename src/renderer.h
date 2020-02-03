@@ -15,7 +15,7 @@ class Renderer {
     Renderer(Renderer &&) = delete;
     Renderer &operator=(Renderer &&) = delete; 
 
-    void Draw(Snake &snake);
+    void Draw(Snake &snake, SDL_Rect &food);
 
   private:
     SDL_Window* _window = NULL;

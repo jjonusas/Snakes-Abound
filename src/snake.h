@@ -18,7 +18,7 @@ class Snake {
     Direction GetDirection() { return _direction; };
     void SetDirection(Direction direction) { _direction = direction; };
 
-    void Update();
+    void Update(SDL_Rect &food);
 
   private:
     std::deque<SDL_Rect> _body;

@@ -1,3 +1,5 @@
+#include <stdlib.h>
+#include <time.h>
 #include <universe.h>
 
 Universe::Universe(std::size_t width, std::size_t height,
@@ -14,15 +16,27 @@ Universe::Universe(std::size_t width, std::size_t height,
 }
 
 void Universe::Run(Controler *controler, Renderer *renderer) {
-  unsigned int current_time, last_time = 0;
 
+  CreateFood();
+
+  unsigned int current_time, last_time = 0;
+  // Enter the game loop
   while (_run) {
     current_time = SDL_GetTicks();
     if (current_time - last_time > _rate) {
       controler->UpdateSnakeDirection();
-      _snake.Update();
-      renderer->Draw(_snake);
+      _snake.Update(_food);
+      renderer->Draw(_snake, _food);
       last_time = current_time;
     }
   }
+}
+
+void Universe::CreateFood() {
+  srand(time(NULL));
+  int ver_step = _height/_grid_ver;
+  int hor_step = _width/_grid_hor;
+  int x = (rand()%_grid_hor)*hor_step;
+  int y = (rand()%_grid_ver)*ver_step;
+  _food = {x, y, hor_step, ver_step};
 }

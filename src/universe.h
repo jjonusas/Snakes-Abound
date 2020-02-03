@@ -18,6 +18,7 @@ class Universe {
     std::size_t GetGridVer() { return _grid_ver; };
     std::size_t GetGridHor() { return _grid_hor; };
 
+    void CreateFood();
     void Run(Controler *controler, Renderer *renderer);
     void Stop() { _run = false; };
 
@@ -25,6 +26,7 @@ class Universe {
     bool _run{true};
 
     Snake _snake;
+    SDL_Rect _food;
 
     std::size_t _width;
     std::size_t _height;

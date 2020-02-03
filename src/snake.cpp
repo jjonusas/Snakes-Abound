@@ -21,7 +21,7 @@ Snake::Snake(Universe *universe, std::size_t width, std::size_t height,
             {2*hor_step, int(grid_ver)*ver_step/2, hor_step, ver_step} };
 }
 
-void Snake::Update() {
+void Snake::Update(SDL_Rect &food) {
   std::size_t height = _universe->GetHeight();
   std::size_t width = _universe->GetWidth();
   std::size_t ver_step = height / _universe->GetGridVer();
@@ -45,13 +45,18 @@ void Snake::Update() {
       break;
   }
 
+  // Check for food or collision 
   auto first = _body.begin();
   auto last = _body.end();
+  bool grow = false;
   for (; first != last; ++first) {
     if (*first == new_head) {
       _universe->Stop();
+    } else if (*first == food) {
+      grow = true;
+      _universe->CreateFood();
     }
   }
   _body.push_front(new_head);
-  _body.pop_back();
+  if (!grow) { _body.pop_back(); }
 }

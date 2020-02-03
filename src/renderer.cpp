@@ -19,11 +19,15 @@ Renderer::Renderer(std::size_t width, std::size_t height)
   }
 }
 
-void Renderer::Draw(Snake &snake) {
+void Renderer::Draw(Snake &snake, SDL_Rect &food) {
 
   // Set the background colour
   SDL_SetRenderDrawColor(_renderer, 0x00, 0x00, 0x00, 0x00);
   SDL_RenderClear(_renderer);
+
+  // Set the colour and draw the food 
+  SDL_SetRenderDrawColor(_renderer, 0x00, 0xA0, 0xA0, 0xA0);
+  SDL_RenderFillRect(_renderer, &food);
 
   // Set the colour of the body and draw the body
   SDL_SetRenderDrawColor(_renderer, 0x31, 0x12, 0xFA, 0xAF);
