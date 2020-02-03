@@ -7,7 +7,8 @@ Universe::Universe(std::size_t width, std::size_t height,
     _grid_ver(grid_ver),
     _grid_hor(grid_hor),
     _run(true) {
-  _snake = Snake(this);
+  _snake = Snake(this, width, height, grid_ver, grid_hor);
+
   // Temporary, will be set later on
   _rate = 100;
 }

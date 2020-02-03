@@ -1,10 +1,18 @@
 #include <snake.h>
 #include <universe.h>
 
-// Temporary constructor for testing
-Snake::Snake(Universe *universe) : _universe(universe), _direction{DIR_DOWN}
-{
-  _body = {{20, 60, 20, 20}, {40, 60, 20, 20}, {60, 60, 20, 20}, {60, 80, 20, 20}, {60, 100, 20, 20}};
+// Passing the info about the size of the universe since the Snake constructor is
+// called at the creation of Universe the data cannot be accessed via the pointer
+Snake::Snake(Universe *universe, std::size_t width, std::size_t height,
+             std::size_t grid_ver, std::size_t grid_hor) 
+    : _universe(universe), _direction{DIR_RIGHT} {
+  
+  int ver_step = height/grid_ver;
+  int hor_step = width/grid_hor;
+
+  _body = { {4*hor_step, int(grid_ver)*ver_step/2, hor_step, ver_step},
+            {3*hor_step, int(grid_ver)*ver_step/2, hor_step, ver_step},
+            {2*hor_step, int(grid_ver)*ver_step/2, hor_step, ver_step} };
 }
 
 void Snake::Update() {
