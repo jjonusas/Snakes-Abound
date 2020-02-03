@@ -1,5 +1,11 @@
+#include <algorithm>
 #include <snake.h>
 #include <universe.h>
+
+// Auxilary function to compare SDL_Rects
+bool operator==(SDL_Rect &a, SDL_Rect &b) {
+  return  a.x == b.x && a.y == b.y && a.w == b.w && a.h == b.h;
+}
 
 // Passing the info about the size of the universe since the Snake constructor is
 // called at the creation of Universe the data cannot be accessed via the pointer
@@ -22,7 +28,7 @@ void Snake::Update() {
   std::size_t hor_step = width / _universe->GetGridHor();
 
   // Assumes that _body is always non empty
-  SDL_Rect new_head = _body[0];
+  SDL_Rect new_head = _body.front();
 
   switch (_direction) {
     case DIR_UP:
@@ -37,6 +43,14 @@ void Snake::Update() {
     case DIR_LEFT:
       new_head.x = (new_head.x + width - ver_step) % width;
       break;
+  }
+
+  auto first = _body.begin();
+  auto last = _body.end();
+  for (; first != last; ++first) {
+    if (*first == new_head) {
+      _universe->Stop();
+    }
   }
   _body.push_front(new_head);
   _body.pop_back();
