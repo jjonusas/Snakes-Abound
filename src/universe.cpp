@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <universe.h>
+#include <game.h>
 
 Universe::Universe(std::size_t width, std::size_t height,
                    std::size_t grid_ver, std::size_t grid_hor) 
@@ -24,7 +25,7 @@ void Universe::Run(Controler *controler, Renderer *renderer) {
   while (_run) {
     current_time = SDL_GetTicks();
     if (current_time - last_time > _rate) {
-      controler->UpdateSnakeDirection();
+      controler->UpdateDirection();
       _snake.Update(_food);
       renderer->Draw(_snake, _food);
       last_time = current_time;
@@ -39,4 +40,8 @@ void Universe::CreateFood() {
   int x = (rand()%_grid_hor)*hor_step;
   int y = (rand()%_grid_ver)*ver_step;
   _food = {x, y, hor_step, ver_step};
+}
+
+void Universe::IncrementScore() {
+  _game->IncrementScore();
 }

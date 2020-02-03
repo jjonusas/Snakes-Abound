@@ -11,7 +11,7 @@ bool operator==(SDL_Rect &a, SDL_Rect &b) {
 // called at the creation of Universe the data cannot be accessed via the pointer
 Snake::Snake(Universe *universe, std::size_t width, std::size_t height,
              std::size_t grid_ver, std::size_t grid_hor) 
-    : _universe(universe), _direction{DIR_RIGHT} {
+    : _universe(universe) {
   
   int ver_step = height/grid_ver;
   int hor_step = width/grid_hor;
@@ -30,17 +30,17 @@ void Snake::Update(SDL_Rect &food) {
   // Assumes that _body is always non empty
   SDL_Rect new_head = _body.front();
 
-  switch (_direction) {
-    case DIR_UP:
+  switch (_universe->GetGameHandle()->GetDirection()) {
+    case Game::Direction::DIR_UP:
       new_head.y = (new_head.y + height - ver_step ) % height; 
       break;
-    case DIR_DOWN:
+    case Game::Direction::DIR_DOWN:
       new_head.y = (new_head.y + height + ver_step) % height;
       break;
-    case DIR_RIGHT:
+    case Game::Direction::DIR_RIGHT:
       new_head.x = (new_head.x + width + ver_step) % width; 
       break;
-    case DIR_LEFT:
+    case Game::Direction::DIR_LEFT:
       new_head.x = (new_head.x + width - ver_step) % width;
       break;
   }
@@ -55,6 +55,7 @@ void Snake::Update(SDL_Rect &food) {
     } else if (*first == food) {
       grow = true;
       _universe->CreateFood();
+      _universe->IncrementScore();
     }
   }
   _body.push_front(new_head);

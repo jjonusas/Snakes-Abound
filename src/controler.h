@@ -1,16 +1,17 @@
 #ifndef CONTROLER_H
 #define CONTROLER_H
 
-#include <universe.h>
-#include <snake.h>
+#include <game.h>
+
+class Game;
 
 class Controler {
   public:
-    Controler(Universe *universe) : _universe(universe) {};
-    void UpdateSnakeDirection();
+    Controler() {};
+    void SetGameHandle(Game *game) { _game = game; };
+    void UpdateDirection();
 
   private:
-    // This will be a list of universes later on
-    Universe *_universe;
+    Game *_game;
 };
 #endif
