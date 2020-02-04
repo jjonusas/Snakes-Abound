@@ -6,6 +6,7 @@
 #include <controler.h>
 #include <universe.h>
 #include <vector>
+#include <memory>
 #include <mutex>
 
 class Controler;

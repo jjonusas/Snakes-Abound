@@ -3,6 +3,7 @@
 #include <controler.h>
 #include <memory>
 #include <vector>
+#include <algorithm>
 
 int main(int argc, char* argv[]) {
   // Initialise renderer, game universe, and controler
