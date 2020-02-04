@@ -9,23 +9,28 @@ bool operator==(SDL_Rect &a, SDL_Rect &b) {
 
 // Passing the info about the size of the universe since the Snake constructor is
 // called at the creation of Universe the data cannot be accessed via the pointer
-Snake::Snake(Universe *universe, std::size_t width, std::size_t height,
-             std::size_t grid_ver, std::size_t grid_hor) 
+Snake::Snake(Universe *universe,
+             std::size_t width,
+             std::size_t height,
+             std::size_t grid_ver,
+             std::size_t grid_hor,
+             std::size_t offset) 
     : _universe(universe) {
   
   int ver_step = height/grid_ver;
   int hor_step = width/grid_hor;
 
-  _body = { {4*hor_step, int(grid_ver)*ver_step/2, hor_step, ver_step},
-            {3*hor_step, int(grid_ver)*ver_step/2, hor_step, ver_step},
-            {2*hor_step, int(grid_ver)*ver_step/2, hor_step, ver_step} };
+  _body = { {4*hor_step+int(offset), int(grid_ver)*ver_step/2, hor_step, ver_step},
+            {3*hor_step+int(offset), int(grid_ver)*ver_step/2, hor_step, ver_step},
+            {2*hor_step+int(offset), int(grid_ver)*ver_step/2, hor_step, ver_step} };
 }
 
 void Snake::Update(SDL_Rect &food) {
   std::size_t height = _universe->GetHeight();
   std::size_t width = _universe->GetWidth();
-  std::size_t ver_step = height / _universe->GetGridVer();
-  std::size_t hor_step = width / _universe->GetGridHor();
+  std::size_t ver_step = height/_universe->GetGridVer();
+  std::size_t hor_step = width/_universe->GetGridHor();
+  std::size_t offset = _universe->GetOffset();
 
   // Assumes that _body is always non empty
   SDL_Rect new_head = _body.front();
@@ -38,10 +43,10 @@ void Snake::Update(SDL_Rect &food) {
       new_head.y = (new_head.y + height + ver_step) % height;
       break;
     case Game::Direction::DIR_RIGHT:
-      new_head.x = (new_head.x + width + ver_step) % width; 
+      new_head.x = (new_head.x - offset + width + ver_step) % width + offset; 
       break;
     case Game::Direction::DIR_LEFT:
-      new_head.x = (new_head.x + width - ver_step) % width;
+      new_head.x = (new_head.x -offset + width - ver_step) % width + offset;
       break;
   }
 

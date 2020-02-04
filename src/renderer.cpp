@@ -1,5 +1,6 @@
 #include <SDL.h>
 #include <renderer.h>
+#include <game.h>
 
 Renderer::Renderer(std::size_t width, std::size_t height) 
     : SCREEN_WIDTH(width), SCREEN_HEIGHT(height) { 
@@ -19,21 +20,27 @@ Renderer::Renderer(std::size_t width, std::size_t height)
   }
 }
 
-void Renderer::Draw(Snake &snake, SDL_Rect &food) {
-
+void Renderer::Draw() {
   // Set the background colour
   SDL_SetRenderDrawColor(_renderer, 0x00, 0x00, 0x00, 0x00);
   SDL_RenderClear(_renderer);
 
   // Set the colour and draw the food 
   SDL_SetRenderDrawColor(_renderer, 0x00, 0xA0, 0xA0, 0xA0);
-  SDL_RenderFillRect(_renderer, &food);
+  for(auto universe: _game->GetUniverses()) {
+    SDL_Rect food = universe->GetFood();
+    SDL_RenderFillRect(_renderer, &food);
+  }
 
   // Set the colour of the body and draw the body
   SDL_SetRenderDrawColor(_renderer, 0x31, 0x12, 0xFA, 0xAF);
-  for (SDL_Rect piece: snake.GetBody()) {
-    SDL_RenderFillRect(_renderer, &piece);
+  
+  for(auto universe: _game->GetUniverses()) {
+    for (SDL_Rect piece: universe->GetSnake().GetBody()) {
+      SDL_RenderFillRect(_renderer, &piece);
+    }
   }
+
   SDL_RenderPresent(_renderer);
 }
 
@@ -46,7 +53,6 @@ Renderer::~Renderer()
   //Destroy window
   SDL_DestroyWindow(_window);
   _window = NULL;
-
 
   //Quit SDL subsystems
   SDL_Quit();

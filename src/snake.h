@@ -9,8 +9,12 @@ class Universe;
 
 class Snake {
   public:
-    Snake(Universe *universe = nullptr, std::size_t width = 640, std::size_t
-          height = 640, std::size_t grid_ver = 32, std::size_t grid_hor = 32); 
+    Snake(Universe *universe = nullptr,
+          std::size_t width = 640,
+          std::size_t height = 640,
+          std::size_t grid_ver = 32,
+          std::size_t grid_hor = 32,
+          std::size_t offset = 0); 
 
     std::deque<SDL_Rect> GetBody() { return _body; }; 
 

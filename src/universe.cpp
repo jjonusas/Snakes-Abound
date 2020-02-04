@@ -1,23 +1,30 @@
+#include <iostream>
 #include <stdlib.h>
+#include <random>
 #include <time.h>
 #include <universe.h>
 #include <game.h>
 
-Universe::Universe(std::size_t width, std::size_t height,
-                   std::size_t grid_ver, std::size_t grid_hor) 
+Universe::Universe(std::size_t width,
+                   std::size_t height,
+                   std::size_t grid_ver,
+                   std::size_t grid_hor, 
+                   std::size_t offset) 
     : _width(width),
     _height(height),
     _grid_ver(grid_ver),
     _grid_hor(grid_hor),
+    _offset(offset),
     _run(true) {
-  _snake = Snake(this, width, height, grid_ver, grid_hor);
+  _snake = Snake(this, width, height, grid_ver, grid_hor, offset);
 
-  // Temporary, will be set later on
-  _rate = 100;
+  std::random_device rd;
+  std::mt19937 gen(rd()); 
+  std::uniform_int_distribution<> dis(75, 150);
+  _rate = dis(gen);
 }
 
-void Universe::Run(Controler *controler, Renderer *renderer) {
-
+void Universe::Run() {
   CreateFood();
 
   unsigned int current_time, last_time = 0;
@@ -25,20 +32,23 @@ void Universe::Run(Controler *controler, Renderer *renderer) {
   while (_run) {
     current_time = SDL_GetTicks();
     if (current_time - last_time > _rate) {
-      controler->UpdateDirection();
       _snake.Update(_food);
-      renderer->Draw(_snake, _food);
       last_time = current_time;
     }
   }
 }
 
 void Universe::CreateFood() {
-  srand(time(NULL));
+  std::random_device rd;
+  std::mt19937 gen(rd()); 
+
   int ver_step = _height/_grid_ver;
   int hor_step = _width/_grid_hor;
-  int x = (rand()%_grid_hor)*hor_step;
-  int y = (rand()%_grid_ver)*ver_step;
+
+  std::uniform_int_distribution<> dis_hor(0, hor_step);
+  int x = (dis_hor(gen))*hor_step+_offset;
+  std::uniform_int_distribution<> dis_ver(0, ver_step);
+  int y = (dis_ver(gen))*ver_step;
   _food = {x, y, hor_step, ver_step};
 }
 
