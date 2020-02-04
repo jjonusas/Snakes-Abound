@@ -6,6 +6,7 @@
 #include <controler.h>
 #include <universe.h>
 #include <vector>
+#include <mutex>
 
 class Controler;
 
@@ -16,13 +17,13 @@ class Game {
     Game(Renderer *renderer, Controler *controler, std::vector<std::shared_ptr<Universe>> &universes); 
 
     int GetScore() { return _score; };
-    Direction GetDirection() { return _direction; };
-    void SetDirection(Direction new_direction) { _direction = new_direction; };
-    std::vector<std::shared_ptr<Universe>> GetUniverses() { return _universes; };
+    Direction GetDirection(); 
+    void SetDirection(Direction new_direction);
+    std::vector<std::shared_ptr<Universe>> GetUniverses();
 
     void Run();
     void Quit();
-    void IncrementScore() { _score++; };
+    void IncrementScore();
 
 
   private:
@@ -33,6 +34,8 @@ class Game {
 
     Direction _direction;
     int _score;
+
+    std::mutex _mutex;
 };
 
 #endif

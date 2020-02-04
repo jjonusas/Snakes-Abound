@@ -31,5 +31,26 @@ void Game::Run() {
 void Game::Quit() {
   for (auto universe : _universes) 
     universe->Stop();
+  std::lock_guard<std::mutex> lock(_mutex);
   _run = false;
+}
+
+void Game::IncrementScore() {
+  std::lock_guard<std::mutex> lock(_mutex);
+  _score++;
+}
+
+void Game::SetDirection(Direction new_direction) {
+  std::lock_guard<std::mutex> lock(_mutex);
+  _direction = new_direction; 
+}
+
+Game::Direction Game::GetDirection() {
+  std::lock_guard<std::mutex> lock(_mutex);
+  return _direction;
+} 
+
+std::vector<std::shared_ptr<Universe>> Game::GetUniverses() {
+  std::lock_guard<std::mutex> lock(_mutex);
+  return _universes; 
 }

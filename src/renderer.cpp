@@ -27,7 +27,8 @@ void Renderer::Draw() {
 
   // Set the colour and draw the food 
   SDL_SetRenderDrawColor(_renderer, 0x00, 0xA0, 0xA0, 0xA0);
-  for(auto universe: _game->GetUniverses()) {
+  auto universes = _game->GetUniverses(); 
+  for(auto universe: universes) {
     SDL_Rect food = universe->GetFood();
     SDL_RenderFillRect(_renderer, &food);
   }
@@ -35,8 +36,9 @@ void Renderer::Draw() {
   // Set the colour of the body and draw the body
   SDL_SetRenderDrawColor(_renderer, 0x31, 0x12, 0xFA, 0xAF);
   
-  for(auto universe: _game->GetUniverses()) {
-    for (SDL_Rect piece: universe->GetSnake().GetBody()) {
+  for(auto universe: universes) {
+    auto body = universe->GetSnake().GetBody();
+    for (SDL_Rect piece: body) {
       SDL_RenderFillRect(_renderer, &piece);
     }
   }

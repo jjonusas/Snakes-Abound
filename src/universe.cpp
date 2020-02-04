@@ -20,7 +20,7 @@ Universe::Universe(std::size_t width,
 
   std::random_device rd;
   std::mt19937 gen(rd()); 
-  std::uniform_int_distribution<> dis(75, 150);
+  std::uniform_int_distribution<> dis(50, 100);
   _rate = dis(gen);
 }
 
@@ -49,9 +49,25 @@ void Universe::CreateFood() {
   int x = (dis_hor(gen))*hor_step+_offset;
   std::uniform_int_distribution<> dis_ver(0, ver_step);
   int y = (dis_ver(gen))*ver_step;
+  std::lock_guard<std::mutex> lock(_mutex);
   _food = {x, y, hor_step, ver_step};
 }
 
 void Universe::IncrementScore() {
   _game->IncrementScore();
+}
+
+void Universe::Stop() {
+  std::lock_guard<std::mutex> lock(_mutex);
+  _run = false; 
+}
+
+Snake Universe::GetSnake() {
+  std::lock_guard<std::mutex> lock(_mutex);
+  return _snake;
+}
+
+SDL_Rect Universe::GetFood() {
+  std::lock_guard<std::mutex> lock(_mutex);
+  return _food;
 }
